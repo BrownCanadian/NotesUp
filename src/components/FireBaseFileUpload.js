@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { txtDB, notesDB } from "../firebase";
+import { notes_main_dir, notesDB } from "../firebase";
 import { v4 } from "uuid";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
@@ -20,8 +20,8 @@ function FirebaseFileUpload() {
 	};
 
 	const handleClick = async () => {
-		const valRef = collection(txtDB, "txtData");
-		await addDoc(valRef, { txtVal: txt, imgUrl: note });
+		const valRef = collection(notes_main_dir, "notes_main_dir");
+		await addDoc(valRef, { name: txt, url: note });
 		alert("Data added successfully");
 	};
 
