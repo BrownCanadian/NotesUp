@@ -3,6 +3,7 @@ import { auth } from "../firebase.js";
 import { signOut } from "firebase/auth";
 import Indi_List from "./indi_list.js";
 import FirebaseFileUpload from "./FireBaseFileUpload.js";
+import NoteListings from "./NoteListings.js";
 import { addDoc, collection, getDocs } from "firebase/firestore";
 import { notes_main_dir } from "../firebase";
 import { Document , Page} from 'react-pdf'
@@ -18,6 +19,12 @@ function Home({ user }) {
 			});
 	};
 
+	const noteList = [
+		{ title: "Hello", price: 12 },
+		{ title: "Bye", price: 12 },
+		{ title: "No", price: 100 },
+		{ title: "CSC 320 Lecture 1-5", price: 5 },
+	];
     const getData = async () =>{
         const valRef = collection(notes_main_dir,'notes_main_dir')
         const dataDb = await getDocs(valRef)
@@ -44,6 +51,7 @@ function Home({ user }) {
 
 
 			<FirebaseFileUpload />
+			<NoteListings notes={noteList} />
 			<button onClick={handleLogout}>Log Out</button>
 		</div>
 	);
