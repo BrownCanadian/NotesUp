@@ -25,56 +25,58 @@ function Home({ user }) {
 			});
 	};
 
-	const noteList = [
-		{
-			id: 1,
-			title: "Hello",
-			price: 12,
-			course_name: "Course 1",
-			description: "This is a note",
-			professor: "Prof. A",
-			note_preview: "",
-			number_of_pages: 10,
-			random: 10,
-			url : "://example.com"
-		},
-		{
-			id: 2,
-			title: "Bye",
-			price: 12,
-			course_name: "EPHE 155",
-			description: "This is a note",
-			professor: "Someone Everyone",
-			note_preview: "",
-			number_of_pages: 20,
-			random: 18,
-			url : "://example.com"
-		},
-		{
-			id: 3,
-			title: "No",
-			price: 100,
-			course_name: "Course 1",
-			description: "This is a note",
-			professor: "Prof. A",
-			note_preview: "",
-			number_of_pages: 10,
-			random: 9,
-			url : "://example.com"
-		},
-		{
-			id: 4,
-			title: "CSC 320 Lecture 1-5",
-			price: 5,
-			course_name: "CSC320",
-			description: "This is a note",
-			professor: "Ulrike",
-			note_preview: "",
-			number_of_pages: 3,
-			random: 1,
-			url : "://example.com"
-		},
-	];
+	
+
+	// const noteList = [
+	// 	{
+	// 		id: 1,
+	// 		title: "Hello",
+	// 		price: 12,
+	// 		course_name: "Course 1",
+	// 		description: "This is a note",
+	// 		professor: "Prof. A",
+	// 		note_preview: "",
+	// 		number_of_pages: 10,
+	// 		random: 10,
+	// 		url : "://example.com"
+	// 	},
+	// 	{
+	// 		id: 2,
+	// 		title: "Bye",
+	// 		price: 12,
+	// 		course_name: "EPHE 155",
+	// 		description: "This is a note",
+	// 		professor: "Someone Everyone",
+	// 		note_preview: "",
+	// 		number_of_pages: 20,
+	// 		random: 18,
+	// 		url : "://example.com"
+	// 	},
+	// 	{
+	// 		id: 3,
+	// 		title: "No",
+	// 		price: 100,
+	// 		course_name: "Course 1",
+	// 		description: "This is a note",
+	// 		professor: "Prof. A",
+	// 		note_preview: "",
+	// 		number_of_pages: 10,
+	// 		random: 9,
+	// 		url : "://example.com"
+	// 	},
+	// 	{
+	// 		id: 4,
+	// 		title: "CSC 320 Lecture 1-5",
+	// 		price: 5,
+	// 		course_name: "CSC320",
+	// 		description: "This is a note",
+	// 		professor: "Ulrike",
+	// 		note_preview: "",
+	// 		number_of_pages: 3,
+	// 		random: 1,
+	// 		url : "://example.com"
+	// 	},
+	// ];
 	const getData = async () => {
 		const valRef = collection(notes_main_dir, "notes_main_dir");
 		const dataDb = await getDocs(valRef);
@@ -86,7 +88,8 @@ function Home({ user }) {
 	useEffect(() => {
 		getData();
 	}, []);
-	console.log(data, "datadata");
+	console.log("firebase data",data);
+	const noteList = data
 
 	return (
 		<BrowserRouter>
