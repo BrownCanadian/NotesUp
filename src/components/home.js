@@ -7,16 +7,12 @@ import NoteListings from "./NoteListings.js";
 import NoteDetails from "./NoteDetails.js";
 import { addDoc, collection, getDocs } from "firebase/firestore";
 import { notes_main_dir } from "../firebase";
-<<<<<<< HEAD
-import { Document , Page} from 'react-pdf'
-=======
 import {
 	BrowserRouter as BrowserRouter,
 	Route,
 	Routes,
 } from "react-router-dom";
 
->>>>>>> a972d97758423444c7f1c7fdfd49bc391276a8a2
 function Home({ user }) {
 	const [data, setData] = useState([]);
 	const handleLogout = () => {
@@ -40,6 +36,7 @@ function Home({ user }) {
 			note_preview: "",
 			number_of_pages: 10,
 			random: 10,
+			url : "://example.com"
 		},
 		{
 			id: 2,
@@ -51,6 +48,7 @@ function Home({ user }) {
 			note_preview: "",
 			number_of_pages: 20,
 			random: 18,
+			url : "://example.com"
 		},
 		{
 			id: 3,
@@ -62,6 +60,7 @@ function Home({ user }) {
 			note_preview: "",
 			number_of_pages: 10,
 			random: 9,
+			url : "://example.com"
 		},
 		{
 			id: 4,
@@ -73,39 +72,9 @@ function Home({ user }) {
 			note_preview: "",
 			number_of_pages: 3,
 			random: 1,
+			url : "://example.com"
 		},
 	];
-<<<<<<< HEAD
-    const getData = async () =>{
-        const valRef = collection(notes_main_dir,'notes_main_dir')
-        const dataDb = await getDocs(valRef)
-        const allData = dataDb.docs.map(val=>({...val.data(),id:val.id}))
-        setData(allData)
-   
-    }
-
-    useEffect(()=>{
-        getData()
-}, [])
- 
-
-	return (
-		<div>
-			<h1>Hello, {user.displayName}</h1>
-		
-            {
-                data.map(value=><div>
-                <h1>{value.name}</h1>
-                <img src={value.url} height='200px' width='200px' /> 
-                </div>)
-             }
-
-
-			<FirebaseFileUpload />
-			<NoteListings notes={noteList} />
-			<button onClick={handleLogout}>Log Out</button>
-		</div>
-=======
 	const getData = async () => {
 		const valRef = collection(notes_main_dir, "notes_main_dir");
 		const dataDb = await getDocs(valRef);
@@ -122,9 +91,6 @@ function Home({ user }) {
 	return (
 		<BrowserRouter>
 			<div>
-				{/* <h1>Hello, {user.displayName}</h1>
-				<Indi_List />
-				<FirebaseFileUpload /> */}
 				<Routes>
 					<Route
 						path="/"
@@ -132,18 +98,17 @@ function Home({ user }) {
 							<div>
 								<h1>Hello, {user.displayName}</h1>
 								<Indi_List />
-								<FirebaseFileUpload />
+								<FirebaseFileUpload user_id={user.email} />
 								<NoteListings notes={noteList} />
 							</div>
 						}
 					/>
-					<Route path="/note/:id" element={<NoteDetails notes={noteList} />} />
+					<Route path="/note/:id" element={<NoteDetails notes={noteList} user_id={user.email} />}/>
 				</Routes>
 				{/* <NoteListings notes={noteList} /> */}
 				<button onClick={handleLogout}>Log Out</button>
 			</div>
 		</BrowserRouter>
->>>>>>> a972d97758423444c7f1c7fdfd49bc391276a8a2
 	);
 }
 
