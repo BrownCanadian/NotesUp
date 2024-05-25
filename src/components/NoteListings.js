@@ -44,20 +44,27 @@ function NoteListings({ notes }) {
 	return (
 		<div>
 			<Container>
-				<Box sx={{ mb: 2 }}>
-					<TextField
-						fullWidth
-						label="Search Note Listings"
-						variant="outlined"
-						value={searchQuery}
-						onChange={(e) => setSearchQuery(e.target.value)}
-					/>
-				</Box>
-				<Box sx={{ mb: 2, textAlign: "right" }}>
-					<Button variant="contained" onClick={handleSort}>
-						Sort by Price ({sortOrder === "asc" ? "Ascending" : "Descending"})
-					</Button>
-				</Box>
+				<Grid container spacing={1}>
+					<Grid item xs={8}>
+						<Box sx={{ mb: 2 }}>
+							<TextField
+								fullWidth
+								label="Search Note Listings"
+								variant="outlined"
+								value={searchQuery}
+								onChange={(e) => setSearchQuery(e.target.value)}
+							/>
+						</Box>
+					</Grid>
+					<Grid item xs={4}>
+						<Box sx={{ mb: 2, textAlign: "right" }}>
+							<Button variant="contained" onClick={handleSort}>
+								Sort by Price (
+								{sortOrder === "asc" ? "Ascending" : "Descending"})
+							</Button>
+						</Box>
+					</Grid>
+				</Grid>
 				<Grid container spacing={2}>
 					{filteredNotes &&
 						filteredNotes.map((note, index) => (
