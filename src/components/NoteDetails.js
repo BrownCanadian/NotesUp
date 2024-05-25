@@ -7,7 +7,7 @@ import { doc, getDoc, updateDoc, arrayUnion, setDoc } from "firebase/firestore";
 
 function NoteDetails({ notes , user_id}) {
 	const { id } = useParams();
-	const note = notes.find((note) => note.id.toString() === id);
+	const note = notes && notes.find((note) => note.id.toString() === id);
 
 	if (!note) {
 		return <div>Note not found</div>;

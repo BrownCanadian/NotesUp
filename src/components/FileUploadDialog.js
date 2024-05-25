@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { addDoc,getDoc, setDoc, updateDoc,doc,arrayUnion,collection } from "firebase/firestore";
 import {
 	Dialog,
 	DialogActions,
@@ -9,10 +10,9 @@ import {
 	Box,
 } from "@mui/material";
 // import { makeStyles } from "@mui/styles";
-import { notes_main_dir, notesDB } from "../firebase";
+import { notes_main_dir,users, notesDB  ,firestore} from "../firebase";
 import { v4 } from "uuid";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { addDoc, collection } from "firebase/firestore";
 
 // const useStyles = makeStyles((theme) => ({
 // 	textField: {
@@ -56,6 +56,21 @@ const UploadDialog = ({ isOpen, handleClose }) => {
 			course_name: course,
 			professor: professor,
 		});
+		const userDocRef = doc(firestore, "users", "rushaan.chawla@gmail.com"); // reference to the user document
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+            // If the document exists, update the noteslisted array
+            await updateDoc(userDocRef, {
+                noteslisted: arrayUnion(note) // append the new string to noteslisted array
+            });
+        } else {
+            // If the document does not exist, create a new one
+            await setDoc(userDocRef, {
+                noteslisted: [note],
+                notesbought: [] // initialize notesbought array if necessary
+            });
+        }
 		alert("Data added successfully");
 	};
 
