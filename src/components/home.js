@@ -25,8 +25,6 @@
 // 			});
 // 	};
 
-	
-
 // 	// const noteList = [
 // 	// 	{
 // 	// 		id: 1,
@@ -117,16 +115,6 @@
 
 // export default Home;
 
-
-
-
-
-
-
-
-
-
-
 import React, { useEffect, useState } from "react";
 import { auth } from "../firebase.js";
 import { signOut } from "firebase/auth";
@@ -137,64 +125,81 @@ import NoteDetails from "./NoteDetails.js";
 import { collection, getDocs } from "firebase/firestore";
 import { notes_main_dir } from "../firebase";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Profile from "./Profile.js";
+import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function Home({ user }) {
-    const [data, setData] = useState(null); // Set initial state to null
-    const [loading, setLoading] = useState(true); // Add loading state
+	const [data, setData] = useState(null); // Set initial state to null
+	const [loading, setLoading] = useState(true); // Add loading state
 
-    const handleLogout = () => {
-        signOut(auth)
-            .then(() => {
-                console.log("User signed out");
-            })
-            .catch((error) => {
-                console.error("Error during sign out: ", error);
-            });
-    };
+	const handleLogout = () => {
+		signOut(auth)
+			.then(() => {
+				console.log("User signed out");
+			})
+			.catch((error) => {
+				console.error("Error during sign out: ", error);
+			});
+	};
 
-    const getData = async () => {
-        try {
-            const valRef = collection(notes_main_dir, "notes_main_dir");
-            const dataDb = await getDocs(valRef);
-            const allData = dataDb.docs.map((val) => ({ ...val.data(), id: val.id }));
-            setData(allData);
-            console.log(dataDb);
-        } catch (error) {
-            console.error("Error fetching data: ", error);
-        } finally {
-            setLoading(false); // Set loading to false after data is fetched
-        }
-    };
+	const navigate = useNavigate();
 
-    useEffect(() => {
-        getData();
-    }, []);
+	const handleProfileClick = () => {
+		navigate(`/profile/${user.displayName}`); // Replace 'username' with the actual username
+	};
 
-    if (loading) {
-        return <div>Loading...</div>; // Show a loading message while data is being fetched
-    }
+	const getData = async () => {
+		try {
+			const valRef = collection(notes_main_dir, "notes_main_dir");
+			const dataDb = await getDocs(valRef);
+			const allData = dataDb.docs.map((val) => ({ ...val.data(), id: val.id }));
+			setData(allData);
+			console.log(dataDb);
+		} catch (error) {
+			console.error("Error fetching data: ", error);
+		} finally {
+			setLoading(false); // Set loading to false after data is fetched
+		}
+	};
 
-    return (
-        <Router>
-            <div>
-                <Routes>
-                    <Route
-                        path="/"
-                        element={
-                            <div>
-                                <h1>Hello, {user.displayName}</h1>
-                                <Indi_List />
-                                <FirebaseFileUpload user_id={user.email} />
-                                {data && <NoteListings notes={data} />}
-                            </div>
-                        }
-                    />
-                    <Route path="/note/:id" element={data && <NoteDetails notes={data} user_id={user.email} />} />
-                </Routes>
-                <button onClick={handleLogout}>Log Out</button>
-            </div>
-        </Router>
-    );
+	useEffect(() => {
+		getData();
+	}, []);
+
+	if (loading) {
+		return <div>Loading...</div>; // Show a loading message while data is being fetched
+	}
+
+	return (
+		// <Router>
+		<div>
+			<Routes>
+				<Route
+					path="/"
+					element={
+						<div>
+							<h1>Hello, {user.displayName}</h1>
+							<Indi_List />
+
+							<FirebaseFileUpload user_id={user.email} />
+							{data && <NoteListings notes={data} user={user} />}
+							<button onClick={handleLogout}>Log Out</button>
+						</div>
+					}
+				/>
+				<Route
+					path="/note/:id"
+					element={data && <NoteDetails notes={data} user_id={user.email} />}
+				/>
+				<Route
+					path="/profile/:username"
+					element={data && <Profile user={user} data={data} />}
+				/>
+			</Routes>
+		</div>
+		// </Router>
+	);
 }
 
 export default Home;
