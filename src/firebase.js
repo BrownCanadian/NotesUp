@@ -26,4 +26,6 @@ const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 export const notesDB = getStorage(app);
 export const notes_main_dir = getFirestore(app);
-export { auth, googleProvider };
+export const users = getFirestore(app)
+const firestore = getFirestore(app); // Initialize Firestore;
+export { auth, googleProvider, firestore };

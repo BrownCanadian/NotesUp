@@ -36,6 +36,7 @@ function Home({ user }) {
 			note_preview: "",
 			number_of_pages: 10,
 			random: 10,
+			url : "://example.com"
 		},
 		{
 			id: 2,
@@ -47,6 +48,7 @@ function Home({ user }) {
 			note_preview: "",
 			number_of_pages: 20,
 			random: 18,
+			url : "://example.com"
 		},
 		{
 			id: 3,
@@ -58,6 +60,7 @@ function Home({ user }) {
 			note_preview: "",
 			number_of_pages: 10,
 			random: 9,
+			url : "://example.com"
 		},
 		{
 			id: 4,
@@ -69,6 +72,7 @@ function Home({ user }) {
 			note_preview: "",
 			number_of_pages: 3,
 			random: 1,
+			url : "://example.com"
 		},
 	];
 	const getData = async () => {
@@ -87,9 +91,6 @@ function Home({ user }) {
 	return (
 		<BrowserRouter>
 			<div>
-				{/* <h1>Hello, {user.displayName}</h1>
-				<Indi_List />
-				<FirebaseFileUpload /> */}
 				<Routes>
 					<Route
 						path="/"
@@ -97,12 +98,12 @@ function Home({ user }) {
 							<div>
 								<h1>Hello, {user.displayName}</h1>
 								<Indi_List />
-								<FirebaseFileUpload />
+								<FirebaseFileUpload user_id={user.email} />
 								<NoteListings notes={noteList} />
 							</div>
 						}
 					/>
-					<Route path="/note/:id" element={<NoteDetails notes={noteList} />} />
+					<Route path="/note/:id" element={<NoteDetails notes={noteList} user_id={user.email} />}/>
 				</Routes>
 				{/* <NoteListings notes={noteList} /> */}
 				<button onClick={handleLogout}>Log Out</button>
