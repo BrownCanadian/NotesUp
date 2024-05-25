@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { auth } from '../firebase.js';
 import { signOut } from 'firebase/auth';
 import Indi_List from './indi_list.js';
+import { collection } from 'firebase/firestore';
 
 function Home({ user }) {
     const handleLogout = () => {
