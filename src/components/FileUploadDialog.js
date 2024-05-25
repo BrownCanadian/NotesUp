@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { addDoc,getDoc, setDoc, updateDoc,doc,arrayUnion,collection } from "firebase/firestore";
+import {
+	addDoc,
+	getDoc,
+	setDoc,
+	updateDoc,
+	doc,
+	arrayUnion,
+	collection,
+} from "firebase/firestore";
 import {
 	Dialog,
 	DialogActions,
@@ -10,7 +18,7 @@ import {
 	Box,
 } from "@mui/material";
 // import { makeStyles } from "@mui/styles";
-import { notes_main_dir,users, notesDB  ,firestore} from "../firebase";
+import { notes_main_dir, users, notesDB, firestore } from "../firebase";
 import { v4 } from "uuid";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
@@ -23,7 +31,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 // 	},
 // }));
 
-const UploadDialog = ({ isOpen, handleClose }) => {
+const UploadDialog = ({ isOpen, handleClose, user_email }) => {
 	// const classes = useStyles();
 	const [title, setTitle] = useState("");
 	const [price, setPrice] = useState("");
@@ -55,22 +63,23 @@ const UploadDialog = ({ isOpen, handleClose }) => {
 			description: description,
 			course_name: course,
 			professor: professor,
+			uploaded_by: user_email,
 		});
 		const userDocRef = doc(firestore, "users", "rushaan.chawla@gmail.com"); // reference to the user document
-        const userDoc = await getDoc(userDocRef);
+		const userDoc = await getDoc(userDocRef);
 
-        if (userDoc.exists()) {
-            // If the document exists, update the noteslisted array
-            await updateDoc(userDocRef, {
-                noteslisted: arrayUnion(note) // append the new string to noteslisted array
-            });
-        } else {
-            // If the document does not exist, create a new one
-            await setDoc(userDocRef, {
-                noteslisted: [note],
-                notesbought: [] // initialize notesbought array if necessary
-            });
-        }
+		if (userDoc.exists()) {
+			// If the document exists, update the noteslisted array
+			await updateDoc(userDocRef, {
+				noteslisted: arrayUnion(note), // append the new string to noteslisted array
+			});
+		} else {
+			// If the document does not exist, create a new one
+			await setDoc(userDocRef, {
+				noteslisted: [note],
+				notesbought: [], // initialize notesbought array if necessary
+			});
+		}
 		alert("Data added successfully");
 	};
 
