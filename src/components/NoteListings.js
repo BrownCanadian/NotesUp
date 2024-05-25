@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Grid, TextField, Box, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import NoteCard from "./NoteCard";
 
 function NoteListings({ notes }) {
@@ -12,6 +13,8 @@ function NoteListings({ notes }) {
 	const [filteredNotes, setFilteredNotes] = useState(notes);
 
 	const [sortOrder, setSortOrder] = useState("asc");
+
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		notes &&
@@ -34,6 +37,10 @@ function NoteListings({ notes }) {
 		setSortOrder(sortOrder === "asc" ? "desc" : "asc");
 	};
 
+	const handleCardClick = (noteId) => {
+		navigate(`/note/${noteId}`);
+	};
+
 	return (
 		<div>
 			<Container>
@@ -54,7 +61,14 @@ function NoteListings({ notes }) {
 				<Grid container spacing={2}>
 					{filteredNotes &&
 						filteredNotes.map((note, index) => (
-							<Grid item xs={12} sm={6} md={4} key={note.id}>
+							<Grid
+								item
+								xs={12}
+								sm={6}
+								md={4}
+								key={note.id}
+								onClick={() => handleCardClick(note.id)}
+							>
 								<NoteCard key={index} note={note} onBuy={handleBuy} />
 							</Grid>
 						))}
