@@ -30,43 +30,19 @@ function FirebaseFileUpload({ user_id }) {
 	};
 
 	const handleClick = async () => {
-		// const valRef = collection(notes_main_dir, "notes_main_dir");
-		// await addDoc(valRef, { name: txt, url: note });
-		// alert("Data added successfully");
+	
 		setIsDialogOpen(true);
-		// const valRef = collection(notes_main_dir, "notes_main_dir");
-		// await addDoc(valRef, { name: txt, url: note });
-
-		// const userDocRef = doc(firestore, "users", "rushaan.chawla@gmail.com"); // reference to the user document
-		// const userDoc = await getDoc(userDocRef);
-
-		// if (userDoc.exists()) {
-		//     // If the document exists, update the noteslisted array
-		//     await updateDoc(userDocRef, {
-		//         noteslisted: arrayUnion(note) // append the new string to noteslisted array
-		//     });
-		// } else {
-		//     // If the document does not exist, create a new one
-		//     await setDoc(userDocRef, {
-		//         noteslisted: [note],
-		//         notesbought: [] // initialize notesbought array if necessary
-		//     });
-		// }
-		// alert("Data added successfully");
+	
 	};
 
 	return (
 		<div>
-			{/* <input onChange={(e) => setTxt(e.target.value)} />
-			<br />
-			<input type="file" onChange={(e) => handleUpload(e)} />
-			<br />
-			<br /> */}
+			
 			<button onClick={handleClick}>Add</button>
 			<FileUploadDialog
 				isOpen={isDialogOpen}
 				handleClose={() => setIsDialogOpen(false)}
-				user_emaill={user_id}
+				user_email={user_id}
 			/>
 		</div>
 	);

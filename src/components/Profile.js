@@ -1,98 +1,87 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
-	Container,
-	Box,
-	Typography,
-	Avatar,
-	List,
-	ListItem,
-	ListItemText,
-	Divider,
-} from "@mui/material";
+    getDoc,
+    doc
+} from "firebase/firestore";
 import { useParams } from "react-router-dom";
+import { firestore } from "../firebase"; // Import Firestore
 
-const ProfilePage = ({ user, data }) => {
-	const { username } = useParams();
+const ProfilePage = ({ user }) => {
+    const { username } = useParams();
+    const [noteslisted, setNotesListed] = useState([]);
+    const [notesbought, setNotesBought] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-	// Placeholder data
-	const boughtNotes = []; // This should come from your state or props
-	const userListings = []; // This should come from your state or props
-	const reviews = []; // This should come from your state or props
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const userDocRef = doc(firestore, "users", "rushaan.chawla@gmail.com"); // Reference to the user document
+                const userDoc = await getDoc(userDocRef);
 
-	return (
-		<Container>
-			<Box display="flex" alignItems="center" mt={4}>
-				<Avatar sx={{ width: 100, height: 100, mr: 4 }}>P</Avatar>
-				<Typography variant="h4">{username}</Typography>
-			</Box>
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    console.log("User Data:", userData); // Debugging: Log user data
+                    setNotesListed(userData.noteslisted || []);
+                    setNotesBought(userData.notesbought || []);
+                } else {
+                    console.log("No such document!");
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-			<Box mt={4}>
-				<Typography variant="h5">Bought Notes</Typography>
-				<List>
-					{boughtNotes.length === 0 ? (
-						<Typography variant="body1">
-							You have not bought any notes yet.
-						</Typography>
-					) : (
-						boughtNotes.map((note, index) => (
-							<ListItem key={index}>
-								<ListItemText
-									primary={note.title}
-									secondary={note.description}
-								/>
-							</ListItem>
-						))
-					)}
-				</List>
-			</Box>
+        fetchUserData();
+    }, []);
 
-			<Box mt={4}>
-				<Typography variant="h5">Your Listings</Typography>
-				<List>
-					{userListings.length === 0 ? (
-						<Typography variant="body1">
-							You have not uploaded any listings yet.
-						</Typography>
-					) : (
-						userListings.map((listing, index) => (
-							<Box key={index}>
-								<ListItem>
-									<ListItemText
-										primary={listing.title}
-										secondary={listing.description}
-									/>
-								</ListItem>
-								{index < userListings.length - 1 && <Divider />}
-							</Box>
-						))
-					)}
-				</List>
-			</Box>
+    if (loading) {
+        return <div className="flex justify-center items-center h-screen">Loading...</div>;
+    }
 
-			{userListings.length > 0 && (
-				<Box mt={4}>
-					<Typography variant="h5">Reviews</Typography>
-					<List>
-						{reviews.length === 0 ? (
-							<Typography variant="body1">There are no reviews yet.</Typography>
-						) : (
-							reviews.map((review, index) => (
-								<Box key={index}>
-									<ListItem>
-										<ListItemText
-											primary={review.title}
-											secondary={review.content}
-										/>
-									</ListItem>
-									{index < reviews.length - 1 && <Divider />}
-								</Box>
-							))
-						)}
-					</List>
-				</Box>
-			)}
-		</Container>
-	);
+    return (
+        <div className="container mx-auto p-4">
+            <div className="flex items-center mt-4">
+                <div className="w-24 h-24 mr-4">
+                    <div className="rounded-full bg-gray-300 flex items-center justify-center text-4xl text-white">
+                        {username.charAt(0).toUpperCase()}
+                    </div>
+                </div>
+                <h1 className="text-4xl">{username}</h1>
+            </div>
+
+            <div className="mt-8">
+                <h2 className="text-2xl mb-4">Bought Notes</h2>
+                <div className="flex space-x-4 overflow-x-auto">
+                    {notesbought.length === 0 ? (
+                        <p className="text-lg">You have not bought any notes yet.</p>
+                    ) : (
+                        notesbought.map((note, index) => (
+                            <div key={index} className="bg-white shadow rounded p-4">
+                                <img src={note} alt="Note" className="w-10% h-auto" />
+                            </div>
+                        ))
+                    )}
+                </div>
+            </div>
+
+            <div className="mt-8">
+                <h2 className="text-2xl mb-4">Your Listings</h2>
+                <div className="flex space-x-4 overflow-x-auto">
+                    {noteslisted.length === 0 ? (
+                        <p className="text-lg">You have not uploaded any listings yet.</p>
+                    ) : (
+                        noteslisted.map((listing, index) => (
+                            <div key={index} className="bg-white shadow rounded p-4">
+                                <img src={listing} alt="Note" className="w-1/5 h-auto" />
+                            </div>
+                        ))
+                    )}
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default ProfilePage;

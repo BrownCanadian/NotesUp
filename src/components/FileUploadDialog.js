@@ -63,7 +63,7 @@ const UploadDialog = ({ isOpen, handleClose, user_email }) => {
 			description: description,
 			course_name: course,
 			professor: professor,
-			uploaded_by: user_email,
+			uploaded_by: user_email ,
 		});
 		const userDocRef = doc(firestore, "users", "rushaan.chawla@gmail.com"); // reference to the user document
 		const userDoc = await getDoc(userDocRef);
